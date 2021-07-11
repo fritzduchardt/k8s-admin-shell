@@ -20,26 +20,11 @@ Includes the following tools:
 - vim
 
 
-## Start interactive tty shell with Docker
-
-```
-docker run --rm --name k8s-admin-shell -it fritzduchardt/k8s-admin-shell:0.1.0
-```
-
-## Start running container with Docker
-```
-# start it
-docker run -d --name k8s-admin-shell --entrypoint tail fritzduchardt/k8s-admin-shell:0.1.0 -f /dev/null
-
-# remove it
-docker rm -f k8s-admin-shell
-```
-
-## Start interactive tty shell with K8s
+## Start shell with K8s
 
 ### Prerequisites
 
-- [kubectl](https://kubernetes.io/docs/tasks/tools/) 
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
 
 ### Installation
 
@@ -54,7 +39,7 @@ chmod +x k8s_admin_shell.sh
 echo 'export PATH=$PATH:$HOME/bin/k8s-admin-shell' >> ~/.zshrc
 source ~/.zshrc
 ```
- 
+
 ### Start shell
 
 The shell script will take care of creating the Pod, opening the shell and removing the Pod after the shell was exited.
@@ -72,6 +57,22 @@ To start the shell in a **privileged Pod** within the Linux namespaces of the wo
 **Caution:** This shell will mount the file system of the K8s worker node it is deployed on. Also, it has **full admin access rights and Kernel capabilities**. It can modify everything!
 ```
 ./k8s_admin_shell.sh true
+```
+
+## Start shell with Docker
+
+### Interactive tty shell
+```
+docker run --rm --name k8s-admin-shell -it fritzduchardt/k8s-admin-shell:0.1.0
+```
+
+### Running container
+```
+# start it
+docker run -d --name k8s-admin-shell --entrypoint tail fritzduchardt/k8s-admin-shell:0.1.0 -f /dev/null
+
+# remove it
+docker rm -f k8s-admin-shell
 ```
 
 

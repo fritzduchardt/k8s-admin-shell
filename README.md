@@ -39,16 +39,21 @@ docker rm -f k8s-admin-shell
 
 ### Prerequisites
 
-- kubectl
+- [kubectl](https://kubernetes.io/docs/tasks/tools/) 
 
 ### Installation
 
 Check out to destination of your choice, e.g.
 ```
+# e.g. install to your home bin folder
 cd ~/bin
+git clone git@github.com:fritzduchardt/k8s-admin-shell.git
+chmod +x k8s_admin_shell.sh
 
+# e.g. amend PATH for zsh
+echo 'export PATH=$PATH:$HOME/bin/k8s-admin-shell' >> ~/.zshrc
+source ~/.zshrc
 ```
-
  
 ### Start shell
 

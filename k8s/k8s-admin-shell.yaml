@@ -7,7 +7,6 @@ metadata:
 spec:
   containers:
   - image: fritzduchardt/k8s-admin-shell:0.1.0
-    imagePullPolicy: Always
     name: k8s-admin-shell
     command:
       - "tail"

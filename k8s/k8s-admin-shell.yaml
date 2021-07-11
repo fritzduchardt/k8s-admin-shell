@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: k8s-admin-shell
+  name: k8s-admin-shell
+spec:
+  containers:
+  - image: fritzduchardt/k8s-admin-shell:0.1.0
+    imagePullPolicy: Always
+    name: k8s-admin-shell
+    command:
+      - "tail"
+      - "-f"
+      - "/dev/null"

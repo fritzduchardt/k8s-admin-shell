@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: k8s-admin-shell
+  name: k8s-admin-shell
+spec:
+  hostNetwork: true
+  hostPID: true
+  hostIPC: true
+  containers:
+  - image: fritzduchardt/k8s-admin-shell:0.1.0
+    imagePullPolicy: Always
+    securityContext:
+      privileged: true
+    name: k8s-admin-shell
+    volumeMounts:
+      - mountPath: /host-fs
+        name: host
+  volumes:
+    - name: host
+      hostPath:
+        path: /

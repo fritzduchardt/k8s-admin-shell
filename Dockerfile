@@ -11,6 +11,6 @@ RUN apt update && \
     apt install sudo -y
 
 # keep it running
-ENTRYPOINT bash
-CMD "tail -f /dev/null"
+ENTRYPOINT [ "bash", "-c" ]
+CMD [ "tail -f /dev/null" ]
 

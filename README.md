@@ -1,5 +1,5 @@
 # k8s-admin-shell
-Docker image with admin tools to analyse K8s nodes
+K8s configuration & Docker image with admin tools to analyse K8s nodes
 
 Includes the following tools:
 

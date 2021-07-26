@@ -9,6 +9,8 @@ spec:
     env:
       - name: test
         value: test
+      - name: test2
+        value: test
     command:
       - "tail"
       - "-f"

@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - image: fritzduchardt/k8s-admin-shell:0.1.0
-    name: k8s-admin-shell-2
+    name: k8s-admin-shell
     command:
       - "tail"
       - "-f"

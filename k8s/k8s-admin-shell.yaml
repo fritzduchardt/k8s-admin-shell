@@ -3,6 +3,7 @@ kind: Pod
 metadata:
   labels:
     run: k8s-admin-shell
+    test: true
   name: k8s-admin-shell
 spec:
   containers:

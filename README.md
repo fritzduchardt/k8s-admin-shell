@@ -19,6 +19,7 @@ Includes the following tools:
 - nameif
 - mii-tool
 - vim
+- wget
 
 
 ## Start shell with K8s
@@ -62,7 +63,7 @@ To start the shell in a **privileged Pod** within the Linux namespaces of the wo
 
 ## Start shell with Docker
 
-### Interactive tty shell
+### interactive tty shell
 ```
 docker run --rm --name k8s-admin-shell -it fritzduchardt/k8s-admin-shell:0.1.0
 ```
@@ -70,7 +71,7 @@ docker run --rm --name k8s-admin-shell -it fritzduchardt/k8s-admin-shell:0.1.0
 ### Running container
 ```
 # start it
-docker run -d --name k8s-admin-shell --entrypoint tail fritzduchardt/k8s-admin-shell:0.1.0 -f /dev/null
+docker run -it --rm --entrypoint bash fritzduchardt/k8s-admin-shell:0.1.0
 
 # remove it
 docker rm -f k8s-admin-shell

@@ -9,6 +9,7 @@ RUN apt update && \
     apt install iputils-ping -y && \
     apt install traceroute -y && \
     apt install dnsutils -y && \
-    apt install sudo -y
+    apt install sudo -y && \
+    apt install wget -y
 
 ENTRYPOINT [ "bash" ]

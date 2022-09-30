@@ -20,6 +20,7 @@ Includes the following tools:
 - mii-tool
 - vim
 - wget
+- openssl
 
 
 ## Start shell with K8s

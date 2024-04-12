@@ -7,6 +7,8 @@ RUN apt update && apt install \
     netcat-openbsd \
     iproute2 \
     iputils-ping \
+    telnet \
+    vim \
     traceroute \
     dnsutils \
     sudo \

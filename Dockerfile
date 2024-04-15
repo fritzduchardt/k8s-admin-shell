@@ -9,6 +9,7 @@ RUN apt update && apt install \
     iputils-ping \
     telnet \
     vim \
+    nmap \
     traceroute \
     dnsutils \
     sudo \

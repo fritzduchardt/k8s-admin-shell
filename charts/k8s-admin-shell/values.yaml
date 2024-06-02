@@ -1,0 +1,3 @@
+image: "fritzduchardt/k8s-admin-shell:latest"
+imagePullSecret: ""
+privileged: false

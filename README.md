@@ -28,54 +28,22 @@ Includes the following tools:
 ### Prerequisites
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/)
+- [helm](https://helm.sh/docs/intro/install/)
+- [fzf](https://github.com/junegunn/fzf)
 
 ### Installation
 
-Check out to destination of your choice, e.g.
-```
-# e.g. install to your home bin folder
-cd ~/bin
-git clone git@github.com:fritzduchardt/k8s-admin-shell.git
-chmod +x k8s_admin_shell.sh
+```bash
+# check out to destination of your choice, e.g.
+git clone git@github.com:fritzduchardt/k8s-admin-shell.git ~/projects/github/k8s-admin-shell
 
-# e.g. amend PATH for zsh
-echo 'export PATH=$PATH:$HOME/bin/k8s-admin-shell' >> ~/.zshrc
-source ~/.zshrc
+# add source config_rc.sh to your shell rc, e.g.:
+source ~/projects/github/k8s-admin-shell/config_rc.sh
 ```
 
-### Start shell
+### Usage
 
-The shell script will take care of creating the Pod, opening the shell and removing the Pod after the shell was exited.
-
-The K8s yamls are stored in the `k8s` folder.
-
-To start the shell in an **ordinary Pod**, e.g. for analysis of the Pod network:
-
+```bash
+./scripts/k8s_admin_shell.sh --help
 ```
-./k8s_admin_shell.sh
-```
-
-To start the shell in a **privileged Pod** within the Linux namespaces of the worker nodes:
-
-**Caution:** This shell will mount the file system of the K8s worker node it is deployed on. Also, it has **full admin access rights and Kernel capabilities**. It can modify everything!
-```
-./k8s_admin_shell.sh true
-```
-
-## Start shell with Docker
-
-### interactive tty shell
-```
-docker run --rm --name k8s-admin-shell -it fritzduchardt/k8s-admin-shell:0.1.0
-```
-
-### Running container
-```
-# start it
-docker run -it --rm --entrypoint bash fritzduchardt/k8s-admin-shell:0.1.0
-
-# remove it
-docker rm -f k8s-admin-shell
-```
-
 

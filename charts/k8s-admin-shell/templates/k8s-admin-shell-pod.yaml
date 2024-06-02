@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: k8s-admin-shell
+spec:
+  {{- if .Values.nodeName }}
+  nodeName: {{ .Values.nodeName }}
+  {{- end }}
+  {{- if .Values.imagePullSecret }}
+  imagePullSecrets:
+    - name: {{ .Values.imagePullSecret }}
+  {{- end }}
+  containers:
+    - image: {{ .Values.image }}
+      name: k8s-admin-shell
+      {{- if .Values.privileged }}
+      securityContext:
+        privileged: true
+      {{- end }}
+      command:
+        - "tail"
+        - "-f"
+        - "/dev/null"

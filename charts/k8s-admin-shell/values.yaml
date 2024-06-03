@@ -1,3 +1,7 @@
 image: "fritzduchardt/k8s-admin-shell:latest"
 imagePullSecret: ""
 privileged: false
+cpuLimit: "100m"
+cpuRequest: "100m"
+memoryLimit: "128Mi"
+memoryRequest: "128Mi"

@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM --platform=$BUILDPLATFORM ubuntu:latest
 
 MAINTAINER Fritz Duchardt (fritz@duchardt.net)
 

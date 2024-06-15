@@ -62,7 +62,8 @@ EOF
 function select_from_config() {
   local config_file="${1}"
   local header="${2}"
-  lib::exec fzf --header "$header" <"$SCRIPT_DIR/../config/$config_file"
+  local query="${3}"
+  lib::exec fzf --header "$header" --query "$query" <"$SCRIPT_DIR/../config/$config_file"
 }
 
 function main() {
@@ -72,6 +73,8 @@ function main() {
   local command="${4}"
   local imagePullSecret="${5}"
   local nodeName=${6}
+  local current_namespace
+  local image_query
 
   # Collecting config
   if [ -z "$privileged" ]; then
@@ -84,12 +87,16 @@ function main() {
   fi
 
   if [ -z "$namespace" ]; then
-    namespace="$(lib::exec kubectl get ns -oname | sed "s#namespace/##" | fzf --header "Select namespace")"
+    current_namespace="$(lib::exec k8s::current_namespace)"
+    namespace="$(lib::exec kubectl get ns -oname | sed "s#namespace/##" | fzf --header "Select namespace" --query "$current_namespace")"
     log::debug "Selected namespace: $namespace"
   fi
 
   if [ -z "$image" ]; then
-    image="$(select_from_config "utility-images.txt" "Select image")"
+    if [ -n "$imagePullSecret" ]; then
+      image_query="$(lib::exec k8s::registry_url "$imagePullSecret")"
+    fi
+    image="$(select_from_config "utility-images.txt" "Select image" "$image_query")"
     log::debug "Selected image: $image"
   fi
 

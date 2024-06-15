@@ -1,1 +1,2 @@
 fritzduchardt/k8s-admin-shell:latest
+ghcr.io/fritzduchardt/k8s-admin-shell:latest

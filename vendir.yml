@@ -1,0 +1,13 @@
+apiVersion: vendir.k14s.io/v1alpha1
+kind: Config
+directories:
+  - path: scripts/lib
+    contents:
+      - path: .
+        git:
+          url: https://github.com/fritzduchardt/k8s-tools
+          ref: master
+        newRootPath: lib
+        includePaths:
+          - "lib/*"
+

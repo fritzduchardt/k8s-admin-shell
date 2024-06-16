@@ -78,7 +78,7 @@ function main() {
 
   # Collecting config
   if [ -z "$privileged" ]; then
-    mode="$(select_from_config "modes.txt" "Select mode")"
+    mode="$(select_from_config "modes.txt" "Select mode" "privileged")"
     if [[ "$mode" == "privileged" ]]; then
       privileged="true"
     else
@@ -94,7 +94,7 @@ function main() {
 
   if [ -z "$image" ]; then
     if [ -n "$imagePullSecret" ]; then
-      image_query="$(lib::exec k8s::registry_url "$imagePullSecret")"
+      image_query="$(lib::exec k8s::registry_url_from_secret "$imagePullSecret")"
     fi
     image="$(select_from_config "utility-images.txt" "Select image" "$image_query")"
     log::debug "Selected image: $image"

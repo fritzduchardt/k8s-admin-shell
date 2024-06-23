@@ -39,5 +39,6 @@ jobs:
             push: true
             tags: ${{ steps.meta.outputs.tags }},"ghcr.io/fritzduchardt/k8s-admin-shell:latest"
             labels: ${{ steps.meta.outputs.labels }}
+            platforms: linux/amd64,linux/arm64
 
 

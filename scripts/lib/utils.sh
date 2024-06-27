@@ -37,5 +37,6 @@ k8s::resource_exists() {
 
 k8s::registry_url_from_secret() {
   local secret_name="$1"
-  lib::exec "$KUBECTL_BIN" get secret "$secret_name" -o go-template='{{ index .data ".dockerconfigjson" | base64decode }}' | jq -re '.auths | keys[0]'
+  local ns="$2"
+  lib::exec "$KUBECTL_BIN" get secret "$secret_name" -n "$ns" -o go-template='{{ index .data ".dockerconfigjson" | base64decode }}' | jq -re '.auths | keys[0]'
 }

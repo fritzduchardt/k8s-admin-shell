@@ -93,7 +93,7 @@ function main() {
 
   if [ -z "$image" ]; then
     if [ -n "$imagePullSecret" ]; then
-      image_query="$(lib::exec k8s::registry_url_from_secret "$imagePullSecret")"
+      image_query="$(lib::exec k8s::registry_url_from_secret "$imagePullSecret" "$namespace")"
     fi
     image="$(select_from_config "utility-images.txt" "Select image" "$image_query")"
     log::debug "Selected image: $image"

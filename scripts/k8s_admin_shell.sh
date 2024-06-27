@@ -87,7 +87,7 @@ function main() {
   fi
 
   if [ -z "$namespace" ]; then
-    namespace="$(k8s::select_namespace) "
+    namespace="$(k8s::select_namespace)"
     log::debug "Selected namespace: $namespace"
   fi
 

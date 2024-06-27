@@ -87,8 +87,7 @@ function main() {
   fi
 
   if [ -z "$namespace" ]; then
-    current_namespace="$(lib::exec k8s::current_namespace)"
-    namespace="$(lib::exec kubectl get ns -oname | sed "s#namespace/##" | fzf --header "Select namespace" --query "$current_namespace")"
+    namespace="$(k8s::select_namespace) "
     log::debug "Selected namespace: $namespace"
   fi
 

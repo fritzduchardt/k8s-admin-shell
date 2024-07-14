@@ -1,5 +1,4 @@
 #!/bin/bash
-# shellcheck disable=SC2034
 set -eo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
@@ -116,7 +115,8 @@ function main() {
     --values "$k8s_values"
 
   # Exec into pod
-  lib::exec kubectl exec -it k8s-admin-shell -n "$namespace" -- "$command"
+  # shellcheck disable=SC2086
+  lib::exec kubectl exec -it k8s-admin-shell -n "$namespace" -- $command
   # Remove values file on success. On error, leave in place for debugging
   lib::exec rm -f "$k8s_values"
 }
@@ -136,14 +136,17 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
       usage
       ;;
     --debug | -D)
+      # shellcheck disable=SC2034
       LOG_LEVEL="debug"
       shift 1
       ;;
     --trace | -T)
+      # shellcheck disable=SC2034
       LOG_LEVEL="trace"
       shift 1
       ;;
     --dry-run)
+      # shellcheck disable=SC2034
       DRY_RUN="true"
       shift 1
       ;;

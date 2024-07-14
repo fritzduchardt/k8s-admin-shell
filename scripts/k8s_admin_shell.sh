@@ -1,11 +1,12 @@
 #!/bin/bash
+# shellcheck disable=SC2034
 set -eo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
-# shellcheck disable=SC1091
+# shellcheck source=./lib/log.sh
 source "$SCRIPT_DIR/lib/log.sh"
-# shellcheck disable=SC1091
+# shellcheck source=./lib/utils.sh
 source "$SCRIPT_DIR/lib/utils.sh"
 
 function usage() {
@@ -56,14 +57,7 @@ Options:
 Usage:
       ./k8s_admin_shell.sh [OPTIONS]
 EOF
-  exit 1
-}
-
-function select_from_config() {
-  local config_file="${1}"
-  local header="${2}"
-  local query="${3}"
-  lib::exec fzf --header "$header" --query "$query" <"$SCRIPT_DIR/../config/$config_file"
+  exit 2
 }
 
 function main() {
@@ -73,12 +67,11 @@ function main() {
   local command="${4}"
   local imagePullSecret="${5}"
   local nodeName=${6}
-  local current_namespace
   local image_query
 
   # Collecting config
   if [ -z "$privileged" ]; then
-    mode="$(select_from_config "modes.txt" "Select mode" "privileged")"
+    local -r mode="$(fzf::select_from_config "$SCRIPT_DIR/../config/modes.txt" "Select mode" "privileged")"
     if [[ "$mode" == "privileged" ]]; then
       privileged="true"
     else
@@ -95,17 +88,17 @@ function main() {
     if [ -n "$imagePullSecret" ]; then
       image_query="$(lib::exec k8s::registry_url_from_secret "$imagePullSecret" "$namespace")"
     fi
-    image="$(select_from_config "utility-images.txt" "Select image" "$image_query")"
+    image="$(fzf::select_from_config "$SCRIPT_DIR/../config/utility-images.txt" "Select image" "$image_query")"
     log::debug "Selected image: $image"
   fi
 
   if [ -z "$command" ]; then
-    command="$(select_from_config "entrypoint-commands.txt" "Select command")"
+    command="$(fzf::select_from_config "$SCRIPT_DIR/../config/entrypoint-commands.txt" "Select command")"
     log::debug "Selected command: $command"
   fi
 
   # Installing helm chart
-  local k8s_values="$(mktemp)"
+  local -r k8s_values="$(mktemp)"
   log::debug "Creating values file: $k8s_values"
   echo """
   image: $image
@@ -114,6 +107,7 @@ function main() {
   nodeName: $nodeName
   """ >"$k8s_values"
   log::info "Starting k8s-admin-shell in namespace: $namespace"
+  # shellcheck disable=SC2064
   trap "lib::exec helm delete k8s-admin-shell -n $namespace; lib::exec kubectl delete pod k8s-admin-shell --force -n $namespace 2>/dev/null" EXIT
   lib::exec helm upgrade k8s-admin-shell "$SCRIPT_DIR/../charts/k8s-admin-shell" \
     --install \
@@ -122,7 +116,7 @@ function main() {
     --values "$k8s_values"
 
   # Exec into pod
-  lib::exec kubectl exec -it k8s-admin-shell -n "$namespace" -- $command
+  lib::exec kubectl exec -it k8s-admin-shell -n "$namespace" -- "$command"
   # Remove values file on success. On error, leave in place for debugging
   lib::exec rm -f "$k8s_values"
 }
@@ -142,12 +136,10 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
       usage
       ;;
     --debug | -D)
-      # shellcheck disable=SC2034
       LOG_LEVEL="debug"
       shift 1
       ;;
     --trace | -T)
-      # shellcheck disable=SC2034
       LOG_LEVEL="trace"
       shift 1
       ;;

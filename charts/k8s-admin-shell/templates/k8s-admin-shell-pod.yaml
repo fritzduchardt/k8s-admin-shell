@@ -5,7 +5,7 @@ metadata:
   {{- if .Values.annotations }}
   annotations:
     {{- toYaml .Values.annotations | nindent 4 }}
-  {{- end }}  
+  {{- end }}
 spec:
   {{- if .Values.nodeName }}
   nodeName: {{ .Values.nodeName }}
@@ -17,10 +17,9 @@ spec:
   containers:
     - image: {{ .Values.image }}
       name: k8s-admin-shell
-      {{- if .Values.privileged }}
       securityContext:
-        privileged: true
-      {{- end }}
+        privileged: {{ .Values.privileged }}
+        runAsUser: {{ .Values.userId }}
       command:
         - "tail"
         - "-f"

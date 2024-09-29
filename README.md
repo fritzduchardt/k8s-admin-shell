@@ -1,6 +1,8 @@
 # k8s-admin-shell
 
-K8s configuration & Docker image with admin tools to analyse K8s nodes.
+![](./misc/knive.jpg)
+
+K8s configuration & Docker image with admin tools to analyse K8s clusters and their workloads.
 
 Includes the following tools:
 
@@ -22,7 +24,6 @@ Includes the following tools:
 - wget
 - openssl
 - amicontained
-
 
 ## Start shell with K8s
 

@@ -21,6 +21,7 @@ Includes the following tools:
 - vim
 - wget
 - openssl
+- amicontained
 
 
 ## Start shell with K8s
@@ -46,4 +47,3 @@ source ~/projects/github/k8s-admin-shell/config_rc.sh
 ```bash
 ./scripts/k8s_admin_shell.sh --help
 ```
-

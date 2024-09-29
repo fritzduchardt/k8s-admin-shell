@@ -1,8 +1,9 @@
 FROM --platform=$BUILDPLATFORM ubuntu:latest
 
-MAINTAINER Fritz Duchardt (fritz@duchardt.net)
+LABEL org.opencontainers.image.authors="fritz@duchardt.net"
 
-RUN apt update && apt install \
+RUN apt-get update && apt-get -y --no-install-recommends install \
+    ca-certificates \
     curl \
     netcat-openbsd \
     iproute2 \
@@ -14,6 +15,12 @@ RUN apt update && apt install \
     dnsutils \
     sudo \
     wget \
-    openssl -y
+    openssl -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+ENV AMICONTAINED_VERSION=v0.4.9
+RUN curl -L -o /usr/bin/amicontained https://github.com/genuinetools/amicontained/releases/download/${AMICONTAINED_VERSION}/amicontained-linux-amd64 && \
+  chmod +x /usr/bin/amicontained
 
 ENTRYPOINT [ "bash" ]

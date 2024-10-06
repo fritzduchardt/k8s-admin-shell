@@ -20,8 +20,3 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
     rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT [ "bash" ]
-
-FROM --platform=linux/amd64 base AS build_amd64
-ENV AMICONTAINED_VERSION=v0.4.9
-RUN curl -L -o /usr/bin/amicontained https://github.com/genuinetools/amicontained/releases/download/${AMICONTAINED_VERSION}/amicontained-linux-amd64 && \
-  chmod +x /usr/bin/amicontained

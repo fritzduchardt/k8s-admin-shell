@@ -12,11 +12,7 @@ env:
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      attestations: write
-      id-token: write
+    permissions: write-all
     steps:
         - name: Checkout repository
           uses: actions/checkout@v4
@@ -44,5 +40,13 @@ jobs:
             tags: ${{ steps.meta.outputs.tags }},"ghcr.io/fritzduchardt/k8s-admin-shell:latest"
             labels: ${{ steps.meta.outputs.labels }}
             platforms: linux/amd64,linux/arm64
-
-
+        - name: Run Trivy vulnerability scanner
+          uses: aquasecurity/trivy-action@0.20.0
+          with:
+            image-ref: 'ghcr.io/fritzduchardt/k8s-admin-shell:latest'
+            format: 'sarif'
+            output: 'trivy-results.sarif'
+        - name: Upload Trivy scan results to GitHub Security tab
+          uses: github/codeql-action/upload-sarif@v3
+          with:
+            sarif_file: 'trivy-results.sarif'

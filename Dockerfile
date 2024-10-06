@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM ubuntu:latest as base
+FROM --platform=$BUILDPLATFORM ubuntu:latest AS base
 
 LABEL org.opencontainers.image.authors="fritz@duchardt.net"
 
@@ -21,7 +21,7 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
 
 ENTRYPOINT [ "bash" ]
 
-FROM --platform=linux/amd64 base
+FROM --platform=linux/amd64 base AS build_amd64
 ENV AMICONTAINED_VERSION=v0.4.9
 RUN curl -L -o /usr/bin/amicontained https://github.com/genuinetools/amicontained/releases/download/${AMICONTAINED_VERSION}/amicontained-linux-amd64 && \
   chmod +x /usr/bin/amicontained

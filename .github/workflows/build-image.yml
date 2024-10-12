@@ -41,11 +41,12 @@ jobs:
             labels: ${{ steps.meta.outputs.labels }}
             platforms: linux/amd64,linux/arm64
         - name: Run Trivy vulnerability scanner
-          uses: aquasecurity/trivy-action@0.20.0
+          uses: aquasecurity/trivy-action@0.27.0
           with:
             image-ref: 'ghcr.io/fritzduchardt/k8s-admin-shell:latest'
             format: 'sarif'
             severity: 'CRITICAL'
+            exit-code: 1
             output: 'trivy-results.sarif'
         - name: Upload Trivy scan results to GitHub Security tab
           uses: github/codeql-action/upload-sarif@v3

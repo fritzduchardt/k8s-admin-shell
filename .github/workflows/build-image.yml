@@ -46,6 +46,7 @@ jobs:
             image-ref: 'ghcr.io/fritzduchardt/k8s-admin-shell:latest'
             format: 'sarif'
             severity: 'CRITICAL'
+            exit-code: 1
             ignore-unfixed: 'true'
             output: 'trivy-results.sarif'
         - name: Upload Trivy scan results to GitHub Security tab

@@ -33,6 +33,7 @@ jobs:
             context: .
             push: true
             sbom: false
+            provenance: false
             tags: "ghcr.io/fritzduchardt/k8s-admin-shell:latest"
             platforms: linux/amd64,linux/arm64
         - name: Run Trivy vulnerability scanner

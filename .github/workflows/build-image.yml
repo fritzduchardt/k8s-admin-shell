@@ -44,9 +44,8 @@ jobs:
           uses: aquasecurity/trivy-action@0.20.0
           with:
             image-ref: 'ghcr.io/fritzduchardt/k8s-admin-shell:latest'
-            format: 'sarif'
+            format: 'table'
             severity: 'CRITICAL'
-            output: 'trivy-results.sarif'
         - name: Upload Trivy scan results to GitHub Security tab
           uses: github/codeql-action/upload-sarif@v3
           with:

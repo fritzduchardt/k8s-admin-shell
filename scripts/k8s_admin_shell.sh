@@ -48,6 +48,8 @@ Options:
             Command to run in the shell
       --pullsecret, -s
             Image pull secret to use
+      --pullpolicy
+            Image pull policy to use (default IfNotPresent)
       --node, -N
             Node to run the shell on
 
@@ -64,6 +66,7 @@ function main() {
   local command="${4}"
   local imagePullSecret="${5}"
   local nodeName=${6}
+  local imagePullPolicy="${7}"
   local image_query
 
   # Collecting config
@@ -98,13 +101,14 @@ function main() {
   local -r k8s_values="$(mktemp)"
   log::debug "Creating values file: $k8s_values"
   echo """
-  image: $image
-  imagePullSecret: $imagePullSecret
+  image:
+    name: $image
+    pullSecret: $imagePullSecret
+    pullPolicy: $imagePullPolicy
   privileged: $privileged
   nodeName: $nodeName
   """ >"$k8s_values"
   log::info "Starting k8s-admin-shell in namespace: $namespace"
-  # shellcheck disable=SC2064
   trap "lib::exec helm delete k8s-admin-shell -n $namespace; lib::exec kubectl delete pod k8s-admin-shell --force -n $namespace 2>/dev/null" EXIT
   lib::exec helm upgrade k8s-admin-shell "$SCRIPT_DIR/../charts/k8s-admin-shell" \
     --install \
@@ -113,7 +117,6 @@ function main() {
     --values "$k8s_values"
 
   # Exec into pod
-  # shellcheck disable=SC2086
   lib::exec kubectl exec -it k8s-admin-shell -n "$namespace" -- $command
   # Remove values file on success. On error, leave in place for debugging
   lib::exec rm -f "$k8s_values"
@@ -126,6 +129,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   image=""
   command=""
   imagePullSecret=""
+  imagePullPolicy="IfNotPresent"
   nodeName=""
 
   while [[ $# -gt 0 ]]; do
@@ -168,6 +172,10 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
       imagePullSecret="$2"
       shift 2
       ;;
+    --pullpolicy)
+      imagePullPolicy="$2"
+      shift 2
+      ;;
     --node | -N)
       nodeName="$2"
       shift 2
@@ -184,7 +192,8 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   log::debug "Running with image: $image"
   log::debug "Running with command: $command"
   log::debug "Running with image pull secret: $imagePullSecret"
+  log::debug "Running with image pull policy: $imagePullPolicy"
   log::debug "Running on node: $nodeName"
 
-  main "$privileged" "$namespace" "$image" "$command" "$imagePullSecret" "$nodeName"
+  main "$privileged" "$namespace" "$image" "$command" "$imagePullSecret" "$nodeName" "$imagePullPolicy"
 fi

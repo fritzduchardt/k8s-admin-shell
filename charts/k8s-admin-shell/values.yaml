@@ -1,5 +1,7 @@
-image: "fritzduchardt/k8s-admin-shell:latest"
-imagePullSecret: "robot-craas-secret"
+image: 
+  name: "fritzduchardt/k8s-admin-shell:latest"
+  pullSecret:
+  pullPolicy: Always
 privileged: false
 cpuLimit: "100m"
 cpuRequest: "100m"

@@ -12,10 +12,11 @@ spec:
   {{- end }}
   {{- if .Values.imagePullSecret }}
   imagePullSecrets:
-    - name: {{ .Values.imagePullSecret }}
+    - name: {{ .Values.image.pullSecret }}
   {{- end }}
   containers:
-    - image: {{ .Values.image }}
+    - image: {{ .Values.image.name }}
+      imagePullPolicy: {{ .Values.image.pullPolicy }}
       name: k8s-admin-shell
       securityContext:
         privileged: {{ .Values.privileged }}

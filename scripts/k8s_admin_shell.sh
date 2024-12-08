@@ -1,10 +1,10 @@
 #!/bin/bash
 set -eo pipefail
 
-SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]:-${0}}")"
 
-source "./lib/log.sh"
-source "./lib/utils.sh"
+source "$SCRIPT_DIR/lib/log.sh"
+source "$SCRIPT_DIR/lib/utils.sh"
 
 function usage() {
   cat >&2 <<EOF
@@ -109,7 +109,7 @@ function main() {
   nodeName: $nodeName
   """ >"$k8s_values"
   log::info "Starting k8s-admin-shell in namespace: $namespace"
-  trap "lib::exec helm delete k8s-admin-shell -n $namespace; lib::exec kubectl delete pod k8s-admin-shell --force -n $namespace 2>/dev/null" EXIT
+  trap "lib::exec helm delete k8s-admin-shell -n '$namespace'; lib::exec kubectl delete pod k8s-admin-shell --force -n '$namespace' 2>/dev/null" EXIT
   lib::exec helm upgrade k8s-admin-shell "$SCRIPT_DIR/../charts/k8s-admin-shell" \
     --install \
     --wait \

@@ -1,10 +1,8 @@
 #!/bin/bash
 set -eo pipefail
 
-SCRIPT_DIR="$(dirname -- "${BASH_SOURCE[0]:-${0}}")"
-
-source "$SCRIPT_DIR/lib/log.sh"
-source "$SCRIPT_DIR/lib/utils.sh"
+source "./lib/log.sh"
+source "./lib/utils.sh"
 
 function usage() {
   cat >&2 <<EOF
@@ -71,7 +69,7 @@ function main() {
 
   # Collecting config
   if [ -z "$privileged" ]; then
-    local -r mode="$(fzf::select_from_config "$SCRIPT_DIR/../config/modes.txt" "Select mode" "privileged")"
+    local -r mode="$(fzf::select_from_config "../config/modes.txt" "Select mode" "privileged")"
     if [[ "$mode" == "privileged" ]]; then
       privileged="true"
     else
@@ -88,12 +86,12 @@ function main() {
     if [ -n "$imagePullSecret" ]; then
       image_query="$(lib::exec k8s::registry_url_from_secret "$imagePullSecret" "$namespace")"
     fi
-    image="$(fzf::select_from_config "$SCRIPT_DIR/../config/utility-images.txt" "Select image" "$image_query")"
+    image="$(fzf::select_from_config "../config/utility-images.txt" "Select image" "$image_query")"
     log::debug "Selected image: $image"
   fi
 
   if [ -z "$command" ]; then
-    command="$(fzf::select_from_config "$SCRIPT_DIR/../config/entrypoint-commands.txt" "Select command")"
+    command="$(fzf::select_from_config "../config/entrypoint-commands.txt" "Select command")"
     log::debug "Selected command: $command"
   fi
 
@@ -109,8 +107,8 @@ function main() {
   nodeName: $nodeName
   """ >"$k8s_values"
   log::info "Starting k8s-admin-shell in namespace: $namespace"
-  trap "lib::exec helm delete k8s-admin-shell -n '$namespace'; lib::exec kubectl delete pod k8s-admin-shell --force -n '$namespace' 2>/dev/null" EXIT
-  lib::exec helm upgrade k8s-admin-shell "$SCRIPT_DIR/../charts/k8s-admin-shell" \
+  trap "lib::exec helm delete k8s-admin-shell -n $namespace; lib::exec kubectl delete pod k8s-admin-shell --force -n $namespace 2>/dev/null" EXIT
+  lib::exec helm upgrade k8s-admin-shell ../charts/k8s-admin-shell \
     --install \
     --wait \
     --namespace "$namespace" \

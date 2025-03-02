@@ -105,6 +105,7 @@ function main() {
     pullPolicy: $imagePullPolicy
   privileged: $privileged
   nodeName: $nodeName
+  hostPID: $privileged
   """ >"$k8s_values"
   log::info "Starting k8s-admin-shell in namespace: $namespace"
   trap "lib::exec helm delete k8s-admin-shell -n $namespace; lib::exec kubectl delete pod k8s-admin-shell --force -n $namespace 2>/dev/null" EXIT

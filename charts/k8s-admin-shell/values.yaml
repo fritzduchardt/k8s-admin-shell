@@ -1,5 +1,5 @@
 image: 
-  name: "fritzduchardt/k8s-admin-shell:latest"
+  name: ""
   pullSecret:
   pullPolicy: Always
 privileged: false

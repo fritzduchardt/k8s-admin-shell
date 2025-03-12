@@ -1,6 +1,6 @@
 image: 
   name: ""
-  pullSecret:
+  imagePullSecret:
   pullPolicy: Always
 privileged: false
 cpuLimit: "100m"

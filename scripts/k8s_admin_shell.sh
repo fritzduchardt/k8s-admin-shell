@@ -6,7 +6,7 @@ SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 source "$SCRIPT_DIR/lib/log.sh"
 source "$SCRIPT_DIR/lib/utils.sh"
 
-function usage() {
+usage() {
   cat >&2 <<EOF
 Runs an interactive shell in a k8s pod with the given image and command.
 
@@ -18,7 +18,7 @@ Examples:
   ./k8s_admin_shell.sh -n kube-system
 
   # Start with a specific image:
-   ./k8s_admin_shell.sh -i busybox
+  ./k8s_admin_shell.sh -i busybox
 
   # Start with a specific command:
   ./k8s_admin_shell.sh -c /bin/sh
@@ -36,8 +36,6 @@ Options:
             Enable debug logging
       --trace, -T
             Enable trace logging
-      --dry-run
-            Print the command that would be run, but do not run it
       --privileged, -p
             Run the shell in privileged mode
       --namespace, -n
@@ -59,7 +57,7 @@ EOF
   exit 2
 }
 
-function main() {
+main() {
   local privileged=${1}
   local namespace="${2}"
   local image="${3}"
@@ -111,11 +109,15 @@ function main() {
   """ >"$k8s_values"
   log::info "Starting k8s-admin-shell in namespace: $namespace"
   trap "lib::exec helm delete k8s-admin-shell -n $namespace; lib::exec kubectl delete pod k8s-admin-shell --force -n $namespace 2>/dev/null" EXIT
-  lib::exec helm upgrade k8s-admin-shell $SCRIPT_DIR/../charts/k8s-admin-shell \
+
+  if ! lib::exec helm upgrade k8s-admin-shell "$SCRIPT_DIR/../charts/k8s-admin-shell" \
     --install \
     --wait \
     --namespace "$namespace" \
-    --values "$k8s_values"
+    --values "$k8s_values"; then
+    log::error "Failed to install Helm chart for k8s-admin-shell"  # MAJOR: Added error handling for Helm installation
+    exit 1
+  fi
 
   # Exec into pod
   lib::exec kubectl exec -it k8s-admin-shell -n "$namespace" -- $command
@@ -139,18 +141,12 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
       usage
       ;;
     --debug | -D)
-      # shellcheck disable=SC2034
       LOG_LEVEL="debug"
       shift 1
       ;;
     --trace | -T)
       # shellcheck disable=SC2034
       LOG_LEVEL="trace"
-      shift 1
-      ;;
-    --dry-run)
-      # shellcheck disable=SC2034
-      DRY_RUN="true"
       shift 1
       ;;
     --namespace | -n)

@@ -1,3 +1,2 @@
-craas-09.itz.cloud.intranet.bund.de/itzbund-gsbhosting/docker/fritzduchardt/k8s-admin-shell:latest
-craas-14.prod.gsb.itz.itzbund.net/itzbund-prod-gsbhosting/docker/fritzduchardt/k8s-admin-shell:latest
-craas-1a.itz.cloud.intranet.bund.de/itzbund-gsbhosting/docker/fritzduchardt/k8s-admin-shell:latest
+fritzduchardt/k8s-admin-shell:latest
+ghcr.io/fritzduchardt/k8s-admin-shell:latest

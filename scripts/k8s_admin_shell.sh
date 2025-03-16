@@ -3,8 +3,8 @@ set -eo pipefail
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 
-source "./lib/log.sh"
-source "./lib/utils.sh"
+source "$SCRIPT_DIR/lib/log.sh"
+source "$SCRIPT_DIR/lib/utils.sh"
 
 function usage() {
   cat >&2 <<EOF

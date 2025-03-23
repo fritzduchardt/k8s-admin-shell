@@ -9,7 +9,7 @@ lib::exec() {
   shift
   if [[ -z "$DRY_RUN" ]] || [[ "$DRY_RUN" != "true" ]]; then
     log::trace "$command ${*}"
-    if ! "$command" "${@}"; then
+    if ! "$command" "$@"; then
       log::error "Failed to execute $command ${*}"
       return 1
     fi
@@ -18,10 +18,11 @@ lib::exec() {
   fi
 }
 
-function fzf::select_from_config() {
-  local config_file="${1}"
-  local header="${2}"
-  local query="${3}"
+# MINOR: Removed function keyword for consistency with other functions
+fzf::select_from_config() {
+  local config_file="$1"
+  local header="$2"
+  local query="$3"
   local entry
   entry="$(lib::exec fzf --print-query --header "$header" --query "$query" <"$config_file" | lib::exec tail -n1)"
   if [[ $? -ne 0 ]]; then
@@ -45,7 +46,7 @@ k8s::resource_exists() {
   local name="$2"
   local namespace="$3"
   lib::exec "$KUBECTL_BIN" get "$resource" "$name" -n "$namespace" 2>/dev/null
-  return "$?"
+  return $?
 }
 
 k8s::registry_url_from_secret() {

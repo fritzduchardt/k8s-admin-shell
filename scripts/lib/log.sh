@@ -1,17 +1,24 @@
 #!/usr/bin/env bash
 
-declare -A LOG_LEVELS
-LOG_LEVELS=([trace]=0 [debug]=1 [info]=2 [warn]=3 [error]=4 [fatal]=5)
+# MINOR: Improved array declaration style
+declare -A LOG_LEVELS=(
+  [trace]=0
+  [debug]=1
+  [info]=2
+  [warn]=3
+  [error]=4
+  [fatal]=5
+)
 LOG_LEVEL="${LOG_LEVEL:-info}"
 LOG_CONTEXT=""
 
 log::_lowercase() {
   local str="$1"
-  echo "$(echo "$str" | tr '[:upper:]' '[:lower:]')"
+  tr '[:upper:]' '[:lower:]' <<< "$str"
 }
 
 log::_islevel() {
-    local level="${1}"
+    local level="$1"
     local level_lc="$(log::_lowercase "$level")"
     local global_lc="$(log::_lowercase "$LOG_LEVEL")"
     local global_level_int=${LOG_LEVELS[$global_lc]}
@@ -34,25 +41,25 @@ log::_logincolor() {
 }
 
 log::trace() {
-    log::_logincolor 35 TRACE "$@" 
+    log::_logincolor 35 TRACE "$@"
 }
 
 log::debug() {
-    log::_logincolor 34 DEBUG "$@" 
+    log::_logincolor 34 DEBUG "$@"
 }
 
 log::info() {
-    log::_logincolor 32 INFO "$@" 
+    log::_logincolor 32 INFO "$@"
 }
 
 log::warn() {
-    log::_logincolor 33 WARN "$@" 
+    log::_logincolor 33 WARN "$@"
 }
 
 log::error() {
-    log::_logincolor 31 ERROR "$@" 
+    log::_logincolor 31 ERROR "$@"
 }
 
 log::fatal() {
-    log::_logincolor 35 FATAL "$@" 
+    log::_logincolor 35 FATAL "$@"
 }

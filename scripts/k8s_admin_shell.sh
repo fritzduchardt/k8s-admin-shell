@@ -58,12 +58,12 @@ EOF
 }
 
 function main() {
-  local privileged=${1}
-  local namespace="${2}"
-  local image="${3}"
-  local command="${4}"
-  local imagePullSecret="${5}"
-  local nodeName=${6}
+  local privileged=$1
+  local namespace="$2"
+  local image="$3"
+  local command="$4"
+  local imagePullSecret="$5"
+  local nodeName=$6
   local image_query
 
   # Collecting config
@@ -97,12 +97,13 @@ function main() {
   # Installing helm chart
   local -r k8s_values="$(mktemp)"
   log::debug "Creating values file: $k8s_values"
-  echo """
-  image: $image
-  imagePullSecret: $imagePullSecret
-  privileged: $privileged
-  nodeName: $nodeName
-  """ >"$k8s_values"
+  cat > "$k8s_values" <<EOF
+image: $image
+imagePullSecret: $imagePullSecret
+privileged: $privileged
+nodeName: $nodeName
+EOF
+
   log::info "Starting k8s-admin-shell in namespace: $namespace"
   # shellcheck disable=SC2064
   trap "lib::exec helm delete k8s-admin-shell -n $namespace; lib::exec kubectl delete pod k8s-admin-shell --force -n $namespace 2>/dev/null" EXIT
@@ -120,7 +121,6 @@ function main() {
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-
   privileged=""
   namespace=""
   image=""

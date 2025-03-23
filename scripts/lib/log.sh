@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# MINOR: Improved array declaration style
 declare -A LOG_LEVELS=(
   [trace]=0
   [debug]=1

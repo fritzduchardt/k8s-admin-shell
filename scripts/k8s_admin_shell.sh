@@ -57,13 +57,14 @@ EOF
   exit 2
 }
 
-function main() {
+main() {
   local privileged=$1
   local namespace="$2"
   local image="$3"
   local command="$4"
   local imagePullSecret="$5"
   local nodeName=$6
+  local imagePullPolicy=$7
   local image_query
 
   # Collecting config
@@ -98,10 +99,13 @@ function main() {
   local -r k8s_values="$(mktemp)"
   log::debug "Creating values file: $k8s_values"
   cat > "$k8s_values" <<EOF
-image: $image
-imagePullSecret: $imagePullSecret
-privileged: $privileged
-nodeName: $nodeName
+image:
+  name: $image
+  pullSecret: $imagePullSecret
+  pullPolicy: $imagePullPolicy
+  privileged: $privileged
+  nodeName: $nodeName
+  hostPID: $privileged
 EOF
 
   log::info "Starting k8s-admin-shell in namespace: $namespace"
@@ -126,6 +130,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   image=""
   command=""
   imagePullSecret=""
+  imagePullPolicy=""
   nodeName=""
 
   while [[ $# -gt 0 ]]; do
@@ -168,6 +173,10 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
       imagePullSecret="$2"
       shift 2
       ;;
+    --pullpolicy)
+      imagePullPolicy="$2"
+      shift 2
+      ;;
     --node | -N)
       nodeName="$2"
       shift 2
@@ -184,7 +193,8 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   log::debug "Running with image: $image"
   log::debug "Running with command: $command"
   log::debug "Running with image pull secret: $imagePullSecret"
+  log::debug "Running with image pull policy: $imagePullPolicy"
   log::debug "Running on node: $nodeName"
 
-  main "$privileged" "$namespace" "$image" "$command" "$imagePullSecret" "$nodeName"
+  main "$privileged" "$namespace" "$image" "$command" "$imagePullSecret" "$nodeName" "$imagePullPolicy"
 fi

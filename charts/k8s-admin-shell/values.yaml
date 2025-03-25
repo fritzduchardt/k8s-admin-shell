@@ -1,5 +1,7 @@
-image: "fritzduchardt/k8s-admin-shell:latest"
-imagePullSecret: "robot-craas-secret"
+image:
+  name: ""
+  pullSecret:
+  pullPolicy: Always
 privileged: false
 cpuLimit: "100m"
 cpuRequest: "100m"
@@ -9,3 +11,4 @@ nodeName:
 annotations:
   sidecar.istio.io/inject: "true"
 userId:
+hostPID: false

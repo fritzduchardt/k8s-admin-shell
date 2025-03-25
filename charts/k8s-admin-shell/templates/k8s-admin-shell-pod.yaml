@@ -10,10 +10,11 @@ spec:
   {{- if .Values.nodeName }}
   nodeName: {{ .Values.nodeName }}
   {{- end }}
-  {{- if .Values.imagePullSecret }}
+  {{- if .Values.image.pullSecret }}
   imagePullSecrets:
-    - name: {{ .Values.imagePullSecret }}
+    - name: {{ .Values.image.pullSecret }}
   {{- end }}
+  hostPID: {{ .Values.hostPID }}
   containers:
     - image: {{ .Values.image }}
       name: k8s-admin-shell

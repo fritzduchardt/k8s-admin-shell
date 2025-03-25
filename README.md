@@ -48,3 +48,10 @@ source ~/projects/github/k8s-admin-shell/config_rc.sh
 ```bash
 ./scripts/k8s_admin_shell.sh --help
 ```
+
+### Build Docker Image for ARM
+
+```bash
+# Qemu strategy: https://docs.docker.com/build/building/multi-platform/#qemu 
+docker build --platform arm64 -t registry.friclu/k8s-admin-shell:arm .
+```

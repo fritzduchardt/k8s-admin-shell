@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM ubuntu:latest AS base
+FROM --platform=$BUILDPLATFORM ubuntu:22.04 AS base
 
 LABEL org.opencontainers.image.authors="fritz@duchardt.net"
 
@@ -6,18 +6,17 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
-    netcat-openbsd \
+    dnsutils \
     iproute2 \
     iputils-ping \
-    telnet \
-    vim \
+    netcat-openbsd \
     nmap \
-    traceroute \
-    dnsutils \
+    openssl \
     sudo \
-    wget \
-    openssl && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    telnet \
+    traceroute \
+    vim \
+    wget && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENTRYPOINT [ "bash" ]

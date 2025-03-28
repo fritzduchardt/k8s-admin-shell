@@ -1,2 +1,1 @@
 ghcr.io/fritzduchardt/k8s-admin-shell:main
-ghcr.io/fritzduchardt/k8s-admin-shell:main@sha256:f8d4e5a522b8c942e6e6393c9982629341640bf0507a8c8f61d6bb8f237fc0a7

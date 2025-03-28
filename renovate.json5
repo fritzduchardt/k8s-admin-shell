@@ -4,5 +4,4 @@
     "config:recommended"
   ],
   pinDigests: true,
-  enabledManagers: ["dockerfile"],
 }

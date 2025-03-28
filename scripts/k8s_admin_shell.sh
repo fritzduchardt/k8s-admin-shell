@@ -103,9 +103,9 @@ image:
   name: $image
   pullSecret: $imagePullSecret
   pullPolicy: $imagePullPolicy
-  privileged: $privileged
-  nodeName: $nodeName
-  hostPID: $privileged
+privileged: $privileged
+nodeName: $nodeName
+hostPID: $privileged
 EOF
 
   log::info "Starting k8s-admin-shell in namespace: $namespace"

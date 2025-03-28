@@ -16,7 +16,7 @@ spec:
   {{- end }}
   hostPID: {{ .Values.hostPID }}
   containers:
-    - image: {{ .Values.image }}
+    - image: {{ .Values.image.name }}
       name: k8s-admin-shell
       securityContext:
         privileged: {{ .Values.privileged }}

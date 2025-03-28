@@ -1,4 +1,4 @@
-FROM ubuntu:24.04 AS base
+FROM --platform=$BUILDPLATFORM ubuntu:24.04 AS base
 
 LABEL org.opencontainers.image.authors="fritz@duchardt.net"
 

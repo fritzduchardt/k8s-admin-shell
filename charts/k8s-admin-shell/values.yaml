@@ -1,14 +1,5 @@
-image:
-  name: ""
-  pullSecret:
-  pullPolicy: Always
-privileged: false
 cpuLimit: "100m"
 cpuRequest: "100m"
 memoryLimit: "128Mi"
 memoryRequest: "128Mi"
-nodeName:
-annotations:
-  sidecar.istio.io/inject: "true"
-userId:
-hostPID: false
+userId: 0

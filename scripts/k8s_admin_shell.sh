@@ -70,6 +70,7 @@ main() {
   # Collecting config
   if [ -z "$privileged" ]; then
     local -r mode="$(fzf::select_from_config "$SCRIPT_DIR/../config/modes.txt" "Select mode" "privileged")"
+    log::debug "mode: $mode"
     if [[ "$mode" == "privileged" ]]; then
       privileged="true"
     else

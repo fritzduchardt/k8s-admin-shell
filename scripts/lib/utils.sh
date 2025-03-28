@@ -36,7 +36,7 @@ fzf::select_from_config() {
   local query="$3"
   local entry
 
-  if ! entry="$(lib::exec fzf --print-query --header "$header" --query "$query" <"$config_file")"; then
+  if ! entry="$(lib::exec fzf --header "$header" --query "$query" <"$config_file")"; then
     log::debug "No entry found in: $config_file. Going with user input: $entry"
   fi
   lib::exec echo "$entry" | tr -d '\n'

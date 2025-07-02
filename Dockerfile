@@ -1,4 +1,4 @@
-FROM ubuntu:24.04@sha256:72297848456d5d37d1262630108ab308d3e9ec7ed1c3286a32fe09856619a782 AS base
+FROM ubuntu:24.04@sha256:440dcf6a5640b2ae5c77724e68787a906afb8ddee98bf86db94eea8528c2c076 AS base
 
 LABEL org.opencontainers.image.authors="fritz@duchardt.net"
 
